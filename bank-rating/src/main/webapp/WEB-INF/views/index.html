@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:with="devEnv = ${#arrays.contains(@environment.getActiveProfiles(),'development')}">
+<head>
+	<title>Рейтінг банків</title>
+	<meta name="description" content=""/>
+	
+	<th:block th:include="include/meta :: meta" />
+</head>
+<body >
+	<div class="container">
+		<th:block th:include="include/navbar :: navbar" />
+		<h1 class="page-header">Picasa to blog <small>{ prepare your Picasa album for blog post }</small></h1>
+		<div th:if="${globalError}" th:text="${globalError}" class="alert alert-danger row"></div>
+
+		<div class="row">
+			<div class="col-sm-8">
+				
+			</div>
+			<div class="col-sm-4 well well-lg">
+				You can use this <a href="https://picasaweb.google.com/data/feed/base/user/116527897062235241340/albumid/6056342117227115201?alt=rss&amp;kind=photo&amp;hl=uk"
+						target="sampleurl">Picasa RSS</a> for test purposes.
+			</div>
+		</div>
+
+		
+	</div>
+</body>
+</html>
