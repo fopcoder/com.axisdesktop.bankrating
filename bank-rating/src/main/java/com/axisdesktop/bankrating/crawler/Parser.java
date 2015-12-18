@@ -1,9 +1,16 @@
 package com.axisdesktop.bankrating.crawler;
 
 import java.util.Map;
+import java.util.Set;
 
 public interface Parser {
-	Map<String, String> parse();
+	Parser parse();
+
+	<V, K> Map<K, V> data();
+
+	Set<String> links();
+
+	<V, K> Map<K, V> paging();
 
 	<T> T convert();
 }

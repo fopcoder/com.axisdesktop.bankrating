@@ -1,13 +1,14 @@
 package com.axisdesktop.bankrating.test;
 
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -80,9 +81,10 @@ public class MinfinParserTest {
 
 	@Test
 	public void shouldMinfinParserIndexParse() {
-		Parser parser = new MinfinParser( indexHtml );
-		Map params = parser.parse();
+		Parser parser = new MinfinParser( indexHtml ).parse();
 
-		assertNotNull( "parser.parse() should be not null", params );
+		assertThat( "links = 37", parser.links().size(), is( 37 ) );
+		assertThat( "paging = 12", parser.paging().size(), is( 12 ) );
+		assertThat( "data = 37", parser.data().size(), is( 37 ) );
 	}
 }
