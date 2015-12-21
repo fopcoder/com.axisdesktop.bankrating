@@ -34,8 +34,7 @@ public class PersistenceConfig {
 	@Bean( name = "dataSource" )
 	DataSource dataSourceDev() {
 		EmbeddedDatabase db = new EmbeddedDatabaseBuilder().setType( EmbeddedDatabaseType.H2 )
-				.setScriptEncoding( "UTF-8" ).build();
-		// .addScript( "sql/schema.sql" )
+				.setScriptEncoding( "UTF-8" ).addScript( "sql/schema.sql" ).build();
 		return db;
 	}
 

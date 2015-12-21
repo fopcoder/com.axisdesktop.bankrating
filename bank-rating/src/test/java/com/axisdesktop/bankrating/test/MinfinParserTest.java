@@ -1,29 +1,28 @@
 package com.axisdesktop.bankrating.test;
 
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
-import com.axisdesktop.bankrating.crawler.MinfinParser;
 import com.axisdesktop.bankrating.crawler.Parser;
+import com.axisdesktop.bankrating.crawler.impl.MinfinParser;
 
 public class MinfinParserTest {
 	public static String indexHtml;
 	public static String bankHtml;
-
-	// @Rule
-	// public final ExpectedException thrown = ExpectedException.none();
 
 	@BeforeClass
 	public static void setup() throws IOException {
@@ -67,16 +66,17 @@ public class MinfinParserTest {
 
 	@Test
 	public void shouldMinfinParserIndexBankNotNull() {
-		assertNotNull( "new MinfinParser( indexHtml, bankHtml ) should not be null", new MinfinParser( indexHtml,
-				bankHtml ) );
-		assertNotNull( "new MinfinParser( indexHtml ) should not be null", new MinfinParser( indexHtml ) );
-		assertNotNull( "new MinfinParser(  bankHtml ) should not be null", new MinfinParser( bankHtml ) );
+		assertThat( "new MinfinParser( indexHtml, bankHtml ) should not be null",
+				new MinfinParser( indexHtml, bankHtml ), not( nullValue() ) );
+		assertThat( "new MinfinParser( indexHtml ) should not be null", new MinfinParser( indexHtml ),
+				not( nullValue() ) );
+		assertThat( "new MinfinParser(  bankHtml ) should not be null", new MinfinParser( bankHtml ), not( nullValue() ) );
 	}
 
 	@Test
-	public void shouldMinfinParserImplementsParser() {
-		assertTrue( "new MinfinParser(  bankHtml ) should implements Parser",
-				new MinfinParser( bankHtml ) instanceof Parser );
+	public void shouldMinfinParserImplementParser() {
+		assertThat( "new MinfinParser(  bankHtml ) should implement Parser", new MinfinParser( bankHtml ),
+				instanceOf( Parser.class ) );
 	}
 
 	@Test
@@ -86,5 +86,16 @@ public class MinfinParserTest {
 		assertThat( "links = 37", parser.links().size(), is( 37 ) );
 		assertThat( "paging = 12", parser.paging().size(), is( 12 ) );
 		assertThat( "data = 37", parser.data().size(), is( 37 ) );
+	}
+
+	@Test
+	public void shouldMinfinParserBankParse() {
+		Parser parser = new MinfinParser( bankHtml ).parse();
+
+		@SuppressWarnings( "unchecked" )
+		Map<String, String> data = (Map<String, String>)parser.data().get( "base" );
+
+		assertThat( "detail size = 14", data.size(), is( 14 ) );
+		assertThat( "get data", data.get( "Объем кредитного портфеля" ), is( "4850.09" ) );
 	}
 }

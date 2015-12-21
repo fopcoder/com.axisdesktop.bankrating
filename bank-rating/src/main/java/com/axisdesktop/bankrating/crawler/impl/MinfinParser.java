@@ -1,4 +1,4 @@
-package com.axisdesktop.bankrating.crawler;
+package com.axisdesktop.bankrating.crawler.impl;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,6 +9,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import com.axisdesktop.bankrating.crawler.Parser;
 
 public class MinfinParser implements Parser {
 	private String[] raw;
@@ -47,25 +49,33 @@ public class MinfinParser implements Parser {
 					this.links.add( bank.select( "a[href]" ).get( 0 ).attr( "href" ) );
 
 					Elements td = bank.select( "td" );
-					map.put( "score", td.get( 0 ).text() );
-					map.put( "name", td.get( 1 ).text() );
+
+					String name = td.get( 1 ).select( "a" ).first().attr( "href" ).replace( "/company/", "" )
+							.replace( "/rating/", "" );
+
+					map.put( "score", td.get( 0 ).text().replaceAll( "\\W", "" ) );
+					map.put( "name", name );
 					map.put( "link", td.get( 1 ).select( "a" ).first().attr( "href" ) );
 					map.put( "rating", td.get( 2 ).text() );
-					map.put( "stress", td.get( 3 ).text() );
-					map.put( "loyal", td.get( 4 ).text() );
-					map.put( "correct", td.get( 5 ).text() );
-					map.put( "naktivnbu", td.get( 6 ).text() );
+					map.put( "stress_tolerance", td.get( 3 ).text() );
+					map.put( "investor_loyalty", td.get( 4 ).text() );
+					map.put( "analyst_correction", td.get( 5 ).text() );
+					map.put( "nbu_asset_size_score", td.get( 6 ).text().replaceAll( "\\W", "" ) );
 
-					System.out.println( map );
-					this.data.put( td.get( 1 ).text(), map );
-					// for( Element cell : td ) {
-					// System.out.println( cell.text() );
-					//
-					// }
+					this.data.put( name, map );
 				}
 			}
 			else {
+				Map<String, String> map = new HashMap<>();
 
+				Elements trs = doc.select( "div.rating-details.base-data table tr" );
+
+				for( Element tr : trs ) {
+					map.put( tr.select( "td" ).get( 0 ).text(),
+							tr.select( "td" ).get( 1 ).text().replaceAll( " млн грн", "" ) );
+				}
+
+				this.data.put( "base", map );
 			}
 		}
 
@@ -91,12 +101,6 @@ public class MinfinParser implements Parser {
 		HashMap<String, Map<String, String>> map = new HashMap<>( this.data.size() );
 		map.putAll( this.data );
 		return map;
-	}
-
-	@Override
-	public <T> T convert() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

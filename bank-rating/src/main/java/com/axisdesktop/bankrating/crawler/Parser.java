@@ -12,5 +12,4 @@ public interface Parser {
 
 	<V, K> Map<K, V> paging();
 
-	<T> T convert();
 }
