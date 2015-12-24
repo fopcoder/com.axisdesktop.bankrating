@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 public class FetchData {
 	@Id
 	@GeneratedValue
-	private long id;
+	private int id;
 
 	private int fetch_status_id;
 
@@ -48,11 +48,11 @@ public class FetchData {
 		this.url = url;
 	}
 
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId( long id ) {
+	public void setId( int id ) {
 		this.id = id;
 	}
 
@@ -86,6 +86,12 @@ public class FetchData {
 
 	public void setModified( Calendar modified ) {
 		this.modified = modified;
+	}
+
+	@Override
+	public String toString() {
+		return "FetchData [id=" + id + ", fetch_status_id=" + fetch_status_id + ", url=" + url + ", created=" + created
+				+ ", modified=" + modified + "]";
 	}
 
 }
