@@ -7,11 +7,13 @@ import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.axisdesktop.bankrating.crawler.impl.MinfinParser;
 import com.axisdesktop.bankrating.entity.FetchData;
 import com.axisdesktop.bankrating.service.FetchDataService;
 
+@Component
 public class Crawler {
 
 	@Autowired
@@ -21,6 +23,9 @@ public class Crawler {
 	private String host;
 	private String path;
 	private HashMap<String, Integer> queue = new HashMap<>();
+
+	public Crawler() {
+	}
 
 	public Crawler( String url ) throws URISyntaxException {
 		URI uri = new URI( url );
@@ -36,27 +41,32 @@ public class Crawler {
 	public void start() {
 
 		try {
-
+			System.out.println( fetchServise );
 			FetchData fd = fetchServise.getByUrl( this.url );
-
-			if( fd == null ) {
-				fd = new FetchData( url, 1 );
-				fetchServise.save( fd );
-			}
-
-			System.out.println( fd );
-			if( true ) return;
+			//
+			// if( fd == null ) {
+			// fd = new FetchData( url, 1 );
+			// fetchServise.save( fd );
+			// }
+			//
+			// System.out.println( fd );
+			// if( true ) return;
 
 			String t = Jsoup.connect( this.url ).get().html();
+			Thread.sleep( 2000 );
 
 			Parser p = new MinfinParser( t ).parse();
 			Map<String, String> map = p.paging();
 
 			for( String d : map.keySet() ) {
+				String m = this.url + "?data=" + d;
+				System.out.println( "====> " + m );
+				// String t = Jsoup.connect( this.url ).get().html();
+
 				for( String l : p.links() ) {
 					l += "?data=" + d;
 					System.out.println( l );
-					Thread.sleep( 2000 );
+					Thread.sleep( 1000 );
 				}
 			}
 
