@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,16 +18,15 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 
 @Entity
-@Table( name = "rating_minfin" )
-public class RatingMinfin {
+@Table( name = "rating" )
+public class Rating {
 	@Id
 	@GeneratedValue
 	private int id;
 
-	@ManyToOne( fetch = FetchType.LAZY, cascade = CascadeType.PERSIST )
+	@ManyToOne( fetch = FetchType.LAZY )
 	@JoinColumn( name = "bank_id", referencedColumnName = "id" )
 	private Bank bank;
 
@@ -39,43 +37,37 @@ public class RatingMinfin {
 	@Temporal( TemporalType.TIMESTAMP )
 	private Calendar modified;
 
-	@NotNull
 	@Temporal( TemporalType.DATE )
 	@Column( nullable = false )
 	private Calendar date;
 
-	@NotNull
 	@Column( nullable = false )
 	private BigDecimal rating;
 
-	@NotNull
 	@Column( nullable = false )
 	private int score;
 
-	@NotNull
 	@Column( name = "stress_tolerance", nullable = false )
 	private BigDecimal stressTolerance;
 
-	@NotNull
 	@Column( name = "investor_loyalty", nullable = false )
 	private BigDecimal investorLoyalty;
 
-	@Column( name = "analyst_correction" )
+	@Column( name = "analyst_correction", nullable = false )
 	private BigDecimal analystCorrection;
 
-	@NotNull
 	@Column( name = "nbu_asset_size_score", nullable = false )
 	private int nbuAssetSizeScore;
 
-	public RatingMinfin() {
+	public Rating() {
 	}
 
-	public RatingMinfin( Bank bank, Map<String, String> info, String date ) {
+	public Rating( Bank bank, Map<String, String> info, String date ) {
 		this.bank = bank;
 
 		try {
 			this.date = Calendar.getInstance();
-			SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-mm-dd" );
+			SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd" );
 			this.date.setTime( sdf.parse( date ) );
 		}
 		catch( ParseException e ) {

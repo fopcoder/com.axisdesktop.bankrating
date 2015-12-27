@@ -6,10 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.axisdesktop.bankrating.entity.Bank;
 import com.axisdesktop.bankrating.entity.FetchData;
-import com.axisdesktop.bankrating.entity.RatingMinfin;
+import com.axisdesktop.bankrating.entity.Rating;
 import com.axisdesktop.bankrating.repository.BankRepository;
 import com.axisdesktop.bankrating.repository.FetchDataRepository;
-import com.axisdesktop.bankrating.repository.RatingMinfinRepository;
+import com.axisdesktop.bankrating.repository.RatingRepository;
 
 @Service
 public class FetchDataServiceImpl implements FetchDataService {
@@ -21,7 +21,7 @@ public class FetchDataServiceImpl implements FetchDataService {
 	private BankRepository bankRepo;
 
 	@Autowired
-	private RatingMinfinRepository minfinRepo;
+	private RatingRepository minfinRepo;
 
 	@Override
 	public FetchData getDataByUrl( String url ) {
@@ -58,7 +58,7 @@ public class FetchDataServiceImpl implements FetchDataService {
 	}
 
 	@Override
-	public RatingMinfin saveRating( RatingMinfin rating ) {
+	public Rating saveRating( Rating rating ) {
 		return minfinRepo.save( rating );
 	}
 }

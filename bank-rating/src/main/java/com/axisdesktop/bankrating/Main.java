@@ -12,18 +12,14 @@ import com.axisdesktop.bankrating.crawler.Crawler;
 
 public class Main {
 
+	private static ApplicationContext ctx;
+
 	public static void main( String[] args ) throws URISyntaxException, IOException {
-		ApplicationContext ctx = new AnnotationConfigApplicationContext( AppConfig.class, PersistenceConfig.class );
+		ctx = new AnnotationConfigApplicationContext( AppConfig.class, PersistenceConfig.class );
 
-		// Fetcher f = new Fetcher( "http://minfin.com.ua/banks/rating/" );
-		// System.out.println( f.fetch().asString() );
-
-		// Crawler crawler = new Crawler( "http://minfin.com.ua/banks/rating/" );
-		// System.out.println( ctx.getBean( "ser" ) );
 		Crawler crawler = ctx.getBean( Crawler.class );
 		crawler.setUrl( "http://minfin.com.ua/banks/rating/" );
 
 		crawler.start();
-
 	}
 }

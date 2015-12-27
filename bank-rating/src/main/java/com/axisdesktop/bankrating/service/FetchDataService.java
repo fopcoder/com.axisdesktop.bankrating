@@ -2,7 +2,7 @@ package com.axisdesktop.bankrating.service;
 
 import com.axisdesktop.bankrating.entity.Bank;
 import com.axisdesktop.bankrating.entity.FetchData;
-import com.axisdesktop.bankrating.entity.RatingMinfin;
+import com.axisdesktop.bankrating.entity.Rating;
 
 public interface FetchDataService {
 
@@ -15,5 +15,5 @@ public interface FetchDataService {
 	// Bank getBankByName( String bank );
 	Bank saveBank( Bank bank );
 
-	RatingMinfin saveRating( RatingMinfin rating );
+	Rating saveRating( Rating rating );
 }

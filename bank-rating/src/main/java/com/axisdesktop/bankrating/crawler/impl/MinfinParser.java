@@ -59,12 +59,19 @@ public class MinfinParser implements Parser {
 					map.put( "score", td.get( 0 ).text().replaceAll( "\\W", "" ).trim() );
 					map.put( "name", name.trim() );
 					map.put( "title", el1.text().trim() );
-					map.put( "link", el1.attr( "href" ).trim() );
+					map.put( "url", el1.attr( "href" ).replaceAll( "\\?.*", "" ).trim() );
 					map.put( "rating", td.get( 2 ).text().replaceAll( "([^0-9.]+)", "" ).trim() );
 					map.put( "stress_tolerance", td.get( 3 ).text().trim() );
 					map.put( "investor_loyalty", td.get( 4 ).text().trim() );
-					map.put( "analyst_correction", td.get( 5 ).text().trim() );
-					map.put( "nbu_asset_size_score", td.get( 6 ).text().replaceAll( "\\W", "" ).trim() );
+
+					if( td.size() == 7 ) {
+						map.put( "analyst_correction", td.get( 5 ).text().trim() );
+						map.put( "nbu_asset_size_score", td.get( 6 ).text().replaceAll( "\\W", "" ).trim() );
+					}
+					else {
+						map.put( "analyst_correction", "0" );
+						map.put( "nbu_asset_size_score", td.get( 5 ).text().replaceAll( "\\W", "" ).trim() );
+					}
 
 					this.data.put( name, map );
 				}

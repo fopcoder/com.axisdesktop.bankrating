@@ -37,7 +37,7 @@ CREATE TABLE `bank` (
 	PRIMARY KEY (`id`)
 ) /*!40101 ENGINE=InnoDB DEFAULT CHARSET=utf8 */;
 
-CREATE TABLE `rating_minfin` (
+CREATE TABLE `rating` (
 	`id` int NOT NULL AUTO_INCREMENT,
 	`created` datetime NOT NULL,
 	`modified` datetime NOT NULL,
@@ -49,7 +49,8 @@ CREATE TABLE `rating_minfin` (
 	`investor_loyalty` decimal(3,2) NOT NULL,
 	`analyst_correction` decimal(3,2) NOT NULL,
 	`nbu_asset_size_score` int NOT NULL,
-	CONSTRAINT `rating_minfin_ibfk_1` FOREIGN KEY (`bank_id`) REFERENCES `bank` (`id`),
+	CONSTRAINT `date_bank` UNIQUE(`bank_id`,`date`),
+	CONSTRAINT `rating_ibfk_1` FOREIGN KEY (`bank_id`) REFERENCES `bank` (`id`),
 	PRIMARY KEY (`id`)
 ) /*!40101 ENGINE=InnoDB DEFAULT CHARSET=utf8 */;
 

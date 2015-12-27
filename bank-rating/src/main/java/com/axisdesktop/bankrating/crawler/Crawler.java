@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.axisdesktop.bankrating.crawler.impl.MinfinParser;
 import com.axisdesktop.bankrating.entity.Bank;
 import com.axisdesktop.bankrating.entity.FetchData;
-import com.axisdesktop.bankrating.entity.RatingMinfin;
+import com.axisdesktop.bankrating.entity.Rating;
 import com.axisdesktop.bankrating.service.FetchDataService;
 
 public class Crawler {
@@ -58,14 +58,20 @@ public class Crawler {
 
 				Map<String, Map<String, String>> indexData = p.data();
 				System.out.println( indexData );
-
+				Rating rating = null;
 				for( Map<String, String> bankRow : indexData.values() ) {
-					Bank bank = new Bank( bankRow );
-					bank = fetchServise.saveBank( bank );
+					try {
+						Bank bank = new Bank( bankRow );
+						bank = fetchServise.saveBank( bank );
 
-					RatingMinfin rating = new RatingMinfin( bank, bankRow, date );
-					// bank.getRatings().add( rating );
+						rating = new Rating( bank, bankRow, date );
+						fetchServise.saveRating( rating );
 
+						// bank.getRatings().add( rating );
+					}
+					catch( Exception e ) {
+						System.out.println( rating );
+					}
 				}
 
 				// fd = new FetchData( dateUrl, 1 );

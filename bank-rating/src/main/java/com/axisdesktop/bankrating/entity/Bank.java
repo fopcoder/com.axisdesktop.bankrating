@@ -1,23 +1,17 @@
 package com.axisdesktop.bankrating.entity;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Map;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table( name = "bank" )
@@ -33,20 +27,14 @@ public class Bank {
 	@Temporal( TemporalType.TIMESTAMP )
 	private Calendar modified;
 
-	@NotNull
 	@Column( nullable = false )
 	private String name;
 
-	@NotNull
 	@Column( nullable = false )
 	private String title;
 
-	@NotNull
 	@Column( nullable = false )
 	private String url;
-
-	// @OneToMany( mappedBy = "bank", fetch = FetchType.LAZY )
-	// private List<RatingMinfin> ratings = new ArrayList<>();
 
 	public Bank() {
 	}
@@ -54,7 +42,7 @@ public class Bank {
 	public Bank( Map<String, String> map ) {
 		this.name = map.get( "name" );
 		this.title = map.get( "title" );
-		this.url = map.get( "link" );
+		this.url = map.get( "url" );
 	}
 
 	@PrePersist
@@ -122,13 +110,5 @@ public class Bank {
 	public void setUrl( String url ) {
 		this.url = url;
 	}
-
-	// public List<RatingMinfin> getRatings() {
-	// return ratings;
-	// }
-	//
-	// public void setRatings( List<RatingMinfin> ratings ) {
-	// this.ratings = ratings;
-	// }
 
 }
