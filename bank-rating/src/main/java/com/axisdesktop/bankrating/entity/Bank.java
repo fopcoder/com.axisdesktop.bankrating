@@ -45,8 +45,8 @@ public class Bank {
 	@Column( nullable = false )
 	private String url;
 
-	@OneToMany( mappedBy = "bank", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST )
-	private List<RatingMinfin> ratings = new ArrayList<>();
+	// @OneToMany( mappedBy = "bank", fetch = FetchType.LAZY )
+	// private List<RatingMinfin> ratings = new ArrayList<>();
 
 	public Bank() {
 	}
@@ -123,12 +123,12 @@ public class Bank {
 		this.url = url;
 	}
 
-	public List<RatingMinfin> getRatings() {
-		return ratings;
-	}
-
-	public void setRatings( List<RatingMinfin> ratings ) {
-		this.ratings = ratings;
-	}
+	// public List<RatingMinfin> getRatings() {
+	// return ratings;
+	// }
+	//
+	// public void setRatings( List<RatingMinfin> ratings ) {
+	// this.ratings = ratings;
+	// }
 
 }

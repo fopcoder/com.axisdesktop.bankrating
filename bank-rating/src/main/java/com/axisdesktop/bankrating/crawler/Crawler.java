@@ -64,7 +64,7 @@ public class Crawler {
 					bank = fetchServise.saveBank( bank );
 
 					RatingMinfin rating = new RatingMinfin( bank, bankRow, date );
-					bank.getRatings().add( rating );
+					// bank.getRatings().add( rating );
 
 				}
 

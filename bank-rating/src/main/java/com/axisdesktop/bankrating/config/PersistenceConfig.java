@@ -40,7 +40,7 @@ public class PersistenceConfig {
 		return db;
 	}
 
-	@Profile( { "development", "cli" } )
+	@Profile( { "development" } )
 	@Bean( initMethod = "start", destroyMethod = "stop" )
 	public Server startDBManager() throws SQLException {
 		return Server.createWebServer();
