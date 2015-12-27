@@ -30,11 +30,11 @@ public class PersistenceConfig {
 	@Autowired
 	private Environment environment;
 
-	@Profile( "development" )
+	@Profile( { "development", "cli" } )
 	@Bean( name = "dataSource" )
 	DataSource dataSourceDev() {
 		EmbeddedDatabase db = new EmbeddedDatabaseBuilder().setType( EmbeddedDatabaseType.H2 )
-				.setScriptEncoding( "UTF-8" ).addScript( "sql/schema.sql" ).build();
+				.setScriptEncoding( "UTF-8" ).addScript( "sql/schema.sql" ).addScript( "sql/data.sql" ).build();
 		return db;
 	}
 

@@ -19,7 +19,8 @@ public class FetchData {
 	@GeneratedValue
 	private int id;
 
-	private int fetch_status_id;
+	@Column( name = "fetch_status_id" )
+	private int fetchStatusId;
 
 	private String url;
 
@@ -44,7 +45,7 @@ public class FetchData {
 	}
 
 	public FetchData( String url, int fetch_status_id ) {
-		this.fetch_status_id = fetch_status_id;
+		this.fetchStatusId = fetch_status_id;
 		this.url = url;
 	}
 
@@ -57,11 +58,11 @@ public class FetchData {
 	}
 
 	public int getFetch_status_id() {
-		return fetch_status_id;
+		return fetchStatusId;
 	}
 
 	public void setFetch_status_id( int fetch_status_id ) {
-		this.fetch_status_id = fetch_status_id;
+		this.fetchStatusId = fetch_status_id;
 	}
 
 	public String getUrl() {
@@ -90,7 +91,7 @@ public class FetchData {
 
 	@Override
 	public String toString() {
-		return "FetchData [id=" + id + ", fetch_status_id=" + fetch_status_id + ", url=" + url + ", created=" + created
+		return "FetchData [id=" + id + ", fetch_status_id=" + fetchStatusId + ", url=" + url + ", created=" + created
 				+ ", modified=" + modified + "]";
 	}
 

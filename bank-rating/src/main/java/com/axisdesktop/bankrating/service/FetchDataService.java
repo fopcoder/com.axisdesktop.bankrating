@@ -7,4 +7,6 @@ public interface FetchDataService {
 	FetchData getByUrl( String url );
 
 	FetchData save( FetchData data );
+
+	long count();
 }

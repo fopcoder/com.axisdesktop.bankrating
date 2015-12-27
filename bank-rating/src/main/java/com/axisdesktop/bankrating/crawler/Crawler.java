@@ -1,73 +1,73 @@
 package com.axisdesktop.bankrating.crawler;
 
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 import java.util.Map;
 
-import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.axisdesktop.bankrating.crawler.impl.MinfinParser;
 import com.axisdesktop.bankrating.entity.FetchData;
 import com.axisdesktop.bankrating.service.FetchDataService;
 
-@Component
 public class Crawler {
 
 	@Autowired
 	private FetchDataService fetchServise;
 
 	private String url;
-	private String host;
-	private String path;
-	private HashMap<String, Integer> queue = new HashMap<>();
 
 	public Crawler() {
 	}
 
-	public Crawler( String url ) throws URISyntaxException {
-		URI uri = new URI( url );
-
+	public Crawler( String url ) {
 		this.url = url;
-		this.host = uri.getHost();
-		this.path = uri.getPath();
-
-		// fetchServise.add();
-		queue.put( url, 0 );
 	}
 
 	public void start() {
 
 		try {
-			System.out.println( fetchServise );
-			FetchData fd = fetchServise.getByUrl( this.url );
-			//
-			// if( fd == null ) {
-			// fd = new FetchData( url, 1 );
-			// fetchServise.save( fd );
-			// }
-			//
-			// System.out.println( fd );
-			// if( true ) return;
+			// get root url for data
+			Fetcher fetcher = new Fetcher( this.url ).fetch();
+			String fileData = fetcher.asString();
+			fetcher.clean();
 
-			String t = Jsoup.connect( this.url ).get().html();
 			Thread.sleep( 2000 );
 
-			Parser p = new MinfinParser( t ).parse();
-			Map<String, String> map = p.paging();
+			Parser p = new MinfinParser( fileData ).parse();
+			Map<String, String> dates = p.paging();
 
-			for( String d : map.keySet() ) {
-				String m = this.url + "?data=" + d;
-				System.out.println( "====> " + m );
+			for( String date : dates.keySet() ) {
+				String dateUrl = this.url + "?date=" + date;
+				System.out.println( "====> " + dateUrl );
+
+				fetcher = new Fetcher( dateUrl ).fetch();
+				fileData = fetcher.asString();
+				fetcher.clean();
+
+				Thread.sleep( 2000 );
+
+				if( fileData == null ) continue;
+
+				p = new MinfinParser( fileData ).parse();
+
+				Map<String, Map<String, String>> data = p.data();
+				System.out.println( data );
+
+				FetchData fd = new FetchData( dateUrl, 1 );
+				fetchServise.save( fd );
+
 				// String t = Jsoup.connect( this.url ).get().html();
 
-				for( String l : p.links() ) {
-					l += "?data=" + d;
-					System.out.println( l );
-					Thread.sleep( 1000 );
-				}
+				// for( String l : p.links() ) {
+				// l += "?date=" + d;
+				//
+				// fd = new FetchData( l, 1 );
+				// fetchServise.save( fd );
+				//
+				// System.out.println( fetchServise.count() );
+				// System.out.println( l );
+				// Thread.sleep( 1000 );
+				// }
 			}
 
 			// System.out.println( t );
@@ -110,5 +110,13 @@ public class Crawler {
 		// }
 
 		// new Worker( this, url );
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl( String url ) {
+		this.url = url;
 	}
 }
