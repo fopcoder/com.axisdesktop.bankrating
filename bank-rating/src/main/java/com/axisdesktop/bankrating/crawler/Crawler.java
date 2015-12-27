@@ -61,10 +61,11 @@ public class Crawler {
 
 				for( Map<String, String> bankRow : indexData.values() ) {
 					Bank bank = new Bank( bankRow );
+					bank = fetchServise.saveBank( bank );
+
 					RatingMinfin rating = new RatingMinfin( bank, bankRow, date );
 					bank.getRatings().add( rating );
 
-					bank = fetchServise.saveBank( bank );
 				}
 
 				// fd = new FetchData( dateUrl, 1 );
