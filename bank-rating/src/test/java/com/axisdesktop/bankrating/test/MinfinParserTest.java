@@ -86,6 +86,8 @@ public class MinfinParserTest {
 		assertThat( "links = 37", parser.links().size(), is( 37 ) );
 		assertThat( "paging = 12", parser.paging().size(), is( 12 ) );
 		assertThat( "data = 37", parser.data().size(), is( 37 ) );
+
+		System.out.println( parser.data() );
 	}
 
 	@Test

@@ -13,12 +13,12 @@ public class Fetcher {
 	private Path tmpPath;
 
 	public Fetcher( String url ) {
+		if( url == null ) throw new IllegalArgumentException( "fetcher url is null" );
+
 		this.url = url;
 	}
 
 	public Fetcher fetch() {
-		if( this.url == null ) throw new IllegalStateException( "fetcher url is null" );
-
 		try {
 			this.tmpPath = Files.createTempFile( "fetcher", ".tmpwww" );
 

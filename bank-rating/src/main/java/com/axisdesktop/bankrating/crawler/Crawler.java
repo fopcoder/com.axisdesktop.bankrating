@@ -1,12 +1,14 @@
 package com.axisdesktop.bankrating.crawler;
 
-import java.net.URISyntaxException;
+import java.util.Calendar;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.axisdesktop.bankrating.crawler.impl.MinfinParser;
+import com.axisdesktop.bankrating.entity.Bank;
 import com.axisdesktop.bankrating.entity.FetchData;
+import com.axisdesktop.bankrating.entity.RatingMinfin;
 import com.axisdesktop.bankrating.service.FetchDataService;
 
 public class Crawler {
@@ -28,33 +30,45 @@ public class Crawler {
 		try {
 			// get root url for data
 			Fetcher fetcher = new Fetcher( this.url ).fetch();
-			String fileData = fetcher.asString();
+			String htmlData = fetcher.asString();
 			fetcher.clean();
 
 			Thread.sleep( 2000 );
 
-			Parser p = new MinfinParser( fileData ).parse();
+			Parser p = new MinfinParser( htmlData ).parse();
 			Map<String, String> dates = p.paging();
 
 			for( String date : dates.keySet() ) {
 				String dateUrl = this.url + "?date=" + date;
 				System.out.println( "====> " + dateUrl );
 
+				FetchData fd = fetchServise.getDataByUrl( dateUrl );
+
+				if( fd != null ) continue;
+
 				fetcher = new Fetcher( dateUrl ).fetch();
-				fileData = fetcher.asString();
+				htmlData = fetcher.asString();
 				fetcher.clean();
 
 				Thread.sleep( 2000 );
 
-				if( fileData == null ) continue;
+				if( htmlData == null ) continue;
 
-				p = new MinfinParser( fileData ).parse();
+				p = new MinfinParser( htmlData ).parse();
 
-				Map<String, Map<String, String>> data = p.data();
-				System.out.println( data );
+				Map<String, Map<String, String>> indexData = p.data();
+				System.out.println( indexData );
 
-				FetchData fd = new FetchData( dateUrl, 1 );
-				fetchServise.save( fd );
+				for( Map<String, String> bankRow : indexData.values() ) {
+					Bank bank = new Bank( bankRow );
+					RatingMinfin rating = new RatingMinfin( bank, bankRow, date );
+					bank.getRatings().add( rating );
+
+					bank = fetchServise.saveBank( bank );
+				}
+
+				// fd = new FetchData( dateUrl, 1 );
+				fetchServise.saveData( new FetchData( dateUrl, 1 ) );
 
 				// String t = Jsoup.connect( this.url ).get().html();
 

@@ -50,17 +50,21 @@ public class MinfinParser implements Parser {
 
 					Elements td = bank.select( "td" );
 
-					String name = td.get( 1 ).select( "a" ).first().attr( "href" ).replace( "/company/", "" )
-							.replace( "/rating/", "" );
+					Element el1 = td.get( 1 ).select( "a" ).get( 1 );
+					String name = el1.attr( "href" ).replace( "/company/", "" ).replace( "/rating/", "" );
+					if( name.indexOf( '?' ) != -1 ) {
+						name = name.substring( 0, name.indexOf( '?' ) );
+					}
 
-					map.put( "score", td.get( 0 ).text().replaceAll( "\\W", "" ) );
-					map.put( "name", name );
-					map.put( "link", td.get( 1 ).select( "a" ).first().attr( "href" ) );
-					map.put( "rating", td.get( 2 ).text() );
-					map.put( "stress_tolerance", td.get( 3 ).text() );
-					map.put( "investor_loyalty", td.get( 4 ).text() );
-					map.put( "analyst_correction", td.get( 5 ).text() );
-					map.put( "nbu_asset_size_score", td.get( 6 ).text().replaceAll( "\\W", "" ) );
+					map.put( "score", td.get( 0 ).text().replaceAll( "\\W", "" ).trim() );
+					map.put( "name", name.trim() );
+					map.put( "title", el1.text().trim() );
+					map.put( "link", el1.attr( "href" ).trim() );
+					map.put( "rating", td.get( 2 ).text().replaceAll( "([^0-9.]+)", "" ).trim() );
+					map.put( "stress_tolerance", td.get( 3 ).text().trim() );
+					map.put( "investor_loyalty", td.get( 4 ).text().trim() );
+					map.put( "analyst_correction", td.get( 5 ).text().trim() );
+					map.put( "nbu_asset_size_score", td.get( 6 ).text().replaceAll( "\\W", "" ).trim() );
 
 					this.data.put( name, map );
 				}

@@ -1,9 +1,11 @@
 package com.axisdesktop.bankrating.config;
 
+import java.sql.SQLException;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.h2.tools.Server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,11 +40,11 @@ public class PersistenceConfig {
 		return db;
 	}
 
-	// @Profile( "development" )
-	// @Bean( initMethod = "start", destroyMethod = "stop" )
-	// public Server startDBManager() throws SQLException {
-	// return Server.createWebServer();
-	// }
+	@Profile( { "development", "cli" } )
+	@Bean( initMethod = "start", destroyMethod = "stop" )
+	public Server startDBManager() throws SQLException {
+		return Server.createWebServer();
+	}
 
 	@Profile( "production" )
 	@Bean( name = "dataSource" )

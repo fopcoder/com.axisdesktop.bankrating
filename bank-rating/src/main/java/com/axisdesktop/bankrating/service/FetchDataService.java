@@ -1,12 +1,19 @@
 package com.axisdesktop.bankrating.service;
 
+import com.axisdesktop.bankrating.entity.Bank;
 import com.axisdesktop.bankrating.entity.FetchData;
+import com.axisdesktop.bankrating.entity.RatingMinfin;
 
 public interface FetchDataService {
 
-	FetchData getByUrl( String url );
+	FetchData getDataByUrl( String url );
 
-	FetchData save( FetchData data );
+	FetchData saveData( FetchData data );
 
-	long count();
+	long countData();
+
+	// Bank getBankByName( String bank );
+	Bank saveBank( Bank bank );
+
+	RatingMinfin saveRating( RatingMinfin rating );
 }
