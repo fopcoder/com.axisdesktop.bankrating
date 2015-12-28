@@ -1,7 +1,5 @@
 package com.axisdesktop.bankrating.config;
 
-import java.io.IOException;
-import java.net.Socket;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -45,13 +43,6 @@ public class PersistenceConfig {
 	@Profile( { "development", "cli" } )
 	@Bean( initMethod = "start", destroyMethod = "stop" )
 	public Server startDBManager() throws SQLException {
-		// try {
-		// if( new Socket( "localhost", 8082 ) != null ) {
-		// return null;
-		// }
-		// }
-		// catch( IOException e ) {/* ignore */}
-
 		return Server.createWebServer();
 	}
 
