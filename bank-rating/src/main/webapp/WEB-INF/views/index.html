@@ -6,7 +6,7 @@
 	
 	<th:block th:include="include/meta :: meta" />
 </head>
-<body >
+<body ng-app="nvd3TestApp">
 	<div class="container">
 		<th:block th:include="include/navbar :: navbar" />
 		<h1 class="page-header">Рейтинг банків</h1>
@@ -19,6 +19,28 @@
 			<div class="col-sm-4 well well-lg">
 				You can use this <a href="https://picasaweb.google.com/data/feed/base/user/116527897062235241340/albumid/6056342117227115201?alt=rss&amp;kind=photo&amp;hl=uk"
 						target="sampleurl">Picasa RSS</a> for test purposes.
+			</div>
+		</div>
+		
+		
+		<div class="row">
+			<div class="col-sm-8">
+				
+				<div ng-controller="ExampleCtrl">
+	<nvd3-line-chart
+    	data="exampleData"
+        
+        xAxisTickFormat="xAxisTickFormatFunction()"
+        yAxisTickFormat="yAxisTickFormatFunction()"
+        width="550"
+        height="350"
+        showXAxis="true"
+        showYAxis="true">
+        	<svg></svg>
+    </nvd3-line-chart>
+</div>
+				
+				
 			</div>
 		</div>
 
